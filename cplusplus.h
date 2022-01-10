@@ -5,3 +5,4 @@
 
 std::string input(std::string text);
 std::string lowerCase(std::string text);
+bool findInString(std::string text);

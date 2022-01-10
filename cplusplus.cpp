@@ -41,3 +41,8 @@ std::string lowerCase(std::string text)
     [](unsigned char c){ return std::tolower(c); });
     return text;
 }
+
+bool findInString(std::string string, std::string substring)
+{
+    text
+}

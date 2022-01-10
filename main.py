@@ -119,6 +119,7 @@ MAIN CLASSES
 
 '''
 # Class still under development 
+
 class neo_number:
     def __init__(self, initial: float, /, min:float=None, max:float=None, wrap: bool = True):
         self.Number = initial
@@ -159,103 +160,106 @@ class neo_number:
 def theCalvinFunction():
     print("**** it's ya boi, kevin bacon")
 
-if (__name__ == "__main__"):
-    typed("hello world", time_between=0.1)
-    while True:
-        # this code is temporary for now. I'm going to make a method to ask for user input that is better and more precise.
-        z = str(input("PY >>> ")).strip(" ")
-        y = z.split(" ")
-        if (len(y) > 1):
-            temp = add_spaces(y[1:])
-            y = [y[0], temp]
-        x = z.lower()
+try:
+    if (__name__ == "__main__"):
+        typed("hello world", time_between=0.1)
+        while True:
+            # this code is temporary for now. I'm going to make a method to ask for user input that is better and more precise.
+            z = str(input("PY >>> ")).strip(" ")
+            y = z.split(" ")
+            if (len(y) > 1):
+                temp = add_spaces(y[1:])
+                y = [y[0], temp]
+            x = z.lower()
 
-        # -----------------------------------
-        # Fun Commands
-        # -----------------------------------
+            # -----------------------------------
+            # Fun Commands
+            # -----------------------------------
 
-        if (x in ["test neonumber", "test neo number"]):
-            test_neo_number()
-        
-        elif (x == "hello world"):
-            typed("Hey that's my line :/")
-        
-        elif (y[0] == "say"):
-            typed(y[1])
+            if (x in ["test neonumber", "test neo number"]):
+                test_neo_number()
+            
+            elif (x == "hello world"):
+                typed("Hey that's my line :/")
+            
+            elif (y[0] == "say"):
+                typed(y[1])
 
-        # -----------------------------------
-        # HAPPY ABI WABI
-        # -----------------------------------
+            # -----------------------------------
+            # HAPPY ABI WABI
+            # -----------------------------------
 
-        elif (x[:3] == "uwu"):
-            try:
-                typed("OwO "*int(x[3:]), 0.001)
-            except Exception:
-                typed("owo")
-        
-        elif (x == "ara ara"):
-            typed("no stop\n"*2, 0.01)
-            typed("no stop")
-        
-        elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
-            typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
-        
-        elif (x == "calvin"):
-            theCalvinFunction()
+            elif (x[:3] == "uwu"):
+                try:
+                    typed("OwO "*int(x[3:]), 0.001)
+                except Exception:
+                    typed("owo")
+            
+            elif (x == "ara ara"):
+                typed("no stop\n"*2, 0.01)
+                typed("no stop")
+            
+            elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
+                typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
+            
+            elif (x == "calvin"):
+                theCalvinFunction()
 
-        # -----------------------------------
-        # Program Commands
-        # -----------------------------------
+            # -----------------------------------
+            # Program Commands
+            # -----------------------------------
 
-        # C++
-        elif (x == "run cplusplus") or (x == "run c++"):
-            # with th.Thread(target=CompileC) as nt:
-            nt = th.Thread(target=CompileC)
-            nt.start()
-            # we should put a loading function here so it can show a loading screen in the console while it compiles!
+            # C++
+            elif (x == "run cplusplus") or (x == "run c++"):
+                # with th.Thread(target=CompileC) as nt:
+                nt = th.Thread(target=CompileC)
+                nt.start()
+                # we should put a loading function here so it can show a loading screen in the console while it compiles!
 
 
-            clear()
-            while True:
-                typed("Compiling...", time_between=0.03)
-                if (not nt.is_alive()):
-                    typed("Done!", time_between=0.02)
-                    break
+                clear()
+                while True:
+                    typed("Compiling...", time_between=0.03)
+                    if (not nt.is_alive()):
+                        typed("Done!", time_between=0.02)
+                        break
+                    clear()
+
+                del nt
+                RunC()
+            
+            # Node Javascript
+            elif (x == "run node"):
+                os.system("clear && node node.js")
+            
+            # C Sharp
+            elif (x == "run c#") or (x == "run csharp"):
+                os.system("clear && echo loading... && csharp csharp.cs")
+            
+            # Java
+            elif (x == "run java"):
+                clear()
+                typed("loading...", time_between=0.02)
+                os.system("java java.java")
+
+                
+            # -------------------------------------
+            # Shell Commands
+            # -------------------------------------
+            
+            elif (x == "clear"):
                 clear()
 
-            del nt
-            RunC()
-        
-        # Node Javascript
-        elif (x == "run node"):
-            os.system("clear && node node.js")
-        
-        # C Sharp
-        elif (x == "run c#") or (x == "run csharp"):
-            os.system("clear && echo loading... && csharp csharp.cs")
-        
-        # Java
-        elif (x == "run java"):
-            clear()
-            typed("loading...", time_between=0.02)
-            os.system("java java.java")
+            elif y[0] in ["console", "cn", "c"]:
+                newY = ""
+                iterable = list(y[1:]) 
+                for i in iterable:
+                    newY += f"{i} "
+                os.system(newY)
 
-            
-        # -------------------------------------
-        # Shell Commands
-        # -------------------------------------
-        
-        elif (x == "clear"):
-            clear()
-
-        elif y[0] in ["console", "cn", "c"]:
-            newY = ""
-            iterable = list(y[1:]) 
-            for i in iterable:
-                newY += f"{i} "
-            os.system(newY)
-
-        elif (x ==  "quit") or (x == "exit"):
-            os.system("exit")
-        else:
-            typed("I don't understand :/")
+            elif (x ==  "quit") or (x == "exit"):
+                os.system("exit")
+            else:
+                typed("I don't understand :/")
+except KeyboardInterrupt:
+    typed("\nExitting...")
