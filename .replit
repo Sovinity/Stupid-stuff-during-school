@@ -1,0 +1,4 @@
+# Run with python 3.10
+# This is where you can make edits to what the run button does on replit
+
+run = "(python3.10 --version || install-pkg python3.10) && clear && python3.10 main.py"
