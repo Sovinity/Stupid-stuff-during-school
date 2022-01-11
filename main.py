@@ -185,6 +185,10 @@ try:
                 typed("Hey that's my line :/")
             
             elif (y[0] == "say"):
+                if (y[1].find("-c")):
+                    y[1] = y[1].replace("-c", "")
+                    clear()
+
                 typed(y[1])
 
             # -----------------------------------
@@ -233,7 +237,7 @@ try:
             # Node Javascript
             elif (x == "run node"):
                 clear()
-                if (check_if_windows):
+                if (check_if_windows()):
                     # subprocess.call('node node.js', shell=True)
                     # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
                     os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')

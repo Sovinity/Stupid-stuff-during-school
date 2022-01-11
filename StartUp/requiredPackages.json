@@ -1,0 +1,24 @@
+{
+    "required": {
+        "python3.10" : {
+            "python3.10 --version": "install-pkg python3.10"
+        },
+    },
+    "optional": {
+        "nodejs" : {
+            "node --version": "install-pkg node",
+            "npm list prompt-sync": "npm install prompt-sync"
+        },
+        "java" : {
+            "java --version": "install-pkg java"
+        },
+        "cplusplus":
+            {
+                "clang++ --version" : "intall-pkg clang++"
+            },
+        "csharp":
+        {
+            "csharp --version" : "install-pkg csharp"
+        }
+    }
+}
