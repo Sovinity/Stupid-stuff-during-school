@@ -10,10 +10,7 @@ from time import sleep
 import platform as pf
 import threading as th
 import random
-import math
 import os
-import sys
-import colorama
 
 '''
 
@@ -54,11 +51,16 @@ def question(text: str, /, return_type: type = str, clr: bool = True, enter_text
             return y;
         except Exception:
             typed(f"That was not an accepted type. This is the required type: {return_type}")
-        
+
+def check_if_windows():
+    if (pf.system().lower() == "windows"):
+        return True;
+    else:
+        return False;   
 
 def clear():
     if (pf.system().lower() == "windows"):
-        os.system("clear")
+        os.system("cls")
     elif (pf.system().lower() == "linux"):
         os.system("clear")
 '''
@@ -230,7 +232,13 @@ try:
             
             # Node Javascript
             elif (x == "run node"):
-                os.system("clear && node node.js")
+                clear()
+                if (check_if_windows):
+                    # subprocess.call('node node.js', shell=True)
+                    # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
+                    os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')
+                else:
+                    os.system("node node.js")
             
             # C Sharp
             elif (x == "run c#") or (x == "run csharp"):
