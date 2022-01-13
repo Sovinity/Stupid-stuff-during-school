@@ -145,7 +145,7 @@ MAIN CLASSES
 
 class neo_number:
     def __init__(self, initial: float, /, min:float=None, max:float=None, wrap: bool = True):
-        self.Number = initial
+        self._number = initial
         if (max <= min):
             raise ValueError("The minimum cannot be greater than or equal to the maximum.")
         else:
@@ -156,46 +156,60 @@ class neo_number:
             else:
                 self.wrap = wrap
     
-    def evaluate(self):
-        if (self.max != None):
-            if (self.Number > self.max):
-                if self.wrap:
-                    # Method 1
-                    # self.Number = self.min + ((self.max-self.min)%(self.max - abs(self.Number)))
+    @property
+    def Number(self):
+        return self._number;
 
-                    # Method 2 (Bruteforce method)
-                    # while (self.Number > self.max):
-                    #     self.Number = self.Number - (self.max - self.min)
+    @Number.setter
+    def Number(self, newNumber):
+        self._number = newNumber
+        if (self.max != None) and (self.Number > self.max):
+            if self.wrap:
+                #Method 3 (Logical Mathematical version, extracting the percentage, and multiplies it against the full width between the min and the max)
+                # x = ((self.Number - self.max) / (self.max-self.min))
+                # y = x - (math.floor(x))
+                # self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
 
-                    # Method 3 (Logical Mathematical version)
-                    x = ((self.Number - self.max) / (self.max-self.min))
-                    y = x - (math.floor(x))
-                    self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
+                # Method 4 (uses the negative space of the percentage)
+                
+                # Get the amount of times that the value is over the maximum
+                x = ((self.Number - self.min) / (self.max-self.min))
 
-                else:
-                    self.Number = self.max
-        if (self.min != None):
-            if (self.Number < self.min):
-                if self.wrap:
-                    # Method 1
-                    # self.Number = self.max - (abs(self.Number)%(self.max-self.min))
+                # Floor it, and find how many times it loops over the maximum (It's floored because that little 
+                # extra bit that wasn't floored will stay. It's similar to the previous method of using the 
+                # percentage, but it does it the opposite way so it is accurate and doesn't use the percentage)
+                # honestly way too complicated to explain
+                y = (math.floor(x))*(self.max-self.min)
 
-                    # Method 2
-                    # while (self.Number < self.min):
-                    #     self.Number = self.Number + (self.max - self.min)
+                # then subtract that value, leaving that small percentage left that did not go over the maximum.
+                self.Number = self.Number - y
 
-                    # Method 3
-                    x = ((self.Number - self.min) / (self.max-self.min))
-                    y = abs(x - (math.floor(x)))
-                    self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
-                    # Just sitting here coding this, thinking, "I need to watch SAO again."
-                else:
-                    self.Number = self.min
+            else:
+                self.Number = self.max
+        if (self.min != None) and (self.Number < self.min):
+            if self.wrap:
+                # Method 3
+                # x = ((self.Number - self.min) / (self.max-self.min))
+                # y = abs(x - (math.floor(x)))
+                # self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
+
+                # Method 4
+                x = ((self.Number - self.max) / (self.max-self.min))
+
+                y = (math.ceil(x)*(self.max-self.min))
+
+                self.Number = self.Number - y
+
+                # Just sitting here coding this, thinking, "I need to watch SAO again."
+            else:
+                self.Number = self.min
         return self.Number
     
-    def set_number(self, number):
-        self.Number = number 
-        self.evaluate()
+    # def set_number(self, number):
+    #     self.Number = number 
+    #     self.evaluate()
+
+
 
     # def add(self, other_num):
     #     newValue = self.Number + other_num
@@ -221,6 +235,7 @@ try:
       # helloWorld() Sorry had to do this to you lol
       while True:
           # this code is temporary for now. I'm going to make a method to ask for user input that is better and more precise.
+          print("--")
           z = str(input("PY >>> ")).strip(" ")
           y = z.split(" ")
           if (len(y) > 1):
@@ -241,9 +256,11 @@ try:
               helloWorld()
           
           elif (y[0] == "say"):
-              if (y[1].find("-c")):
+              if (y[1].find("-c") != -1):
+                  # print(y[1].find("-c"))
                   y[1] = y[1].replace("-c", "")
                   clear()
+                  
 
               typed(y[1])
 
