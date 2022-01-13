@@ -28,8 +28,8 @@ def typed(text, /, time_between: float =0.08, clr: bool=False):
     print()
 
 def toBool(string: str):
-    true_statements = ["yes", "yep", "uh-huh", "yeah", "true"]
-    false_statements = ["no", "nope", "nuh-uh", "false"]
+    true_statements = ["yes", "yep", "uh-huh", "yeah", "true", "definitely"]
+    false_statements = ["no", "nope", "nuh-uh", "false", "definitely not"]
 
     if (string.lower() in true_statements):
         return True;
@@ -70,7 +70,6 @@ def clear():
         os.system("cls")
     elif (pf.system().lower() == "linux"):
         os.system("clear")
-
 '''
 
 BASIC METHODS
@@ -122,6 +121,20 @@ def test_neo_number():
             print(nn.Number)
         elif (x == "exit"):
             return;
+            
+def helloWorld():
+    try:
+        typed("Hello World", 0.1)
+        sleep(1)
+        typed("Programmed to work and not to feel.", 0.1)
+        sleep(1)
+        typed("Not even sure that this is real.", 0.1)
+        sleep(1)
+        typed("Hello World", 0.3)
+        sleep(3)
+        clear()
+    except KeyboardInterrupt:
+        typed("\nWhy are you stopping me?", 0.04)
 
 '''
 
@@ -192,116 +205,137 @@ class neo_number:
 def theCalvinFunction():
     print("**** it's ya boi, kevin bacon")
 
+def theReaperFunction(pick: int = 3, type_rest: float = 0.04):
+  if (pick == 0):
+    typed(random.choice(["You called?", "Yeah, I'm here, why?", "Suprise, I am in fact, not dead.", "Probably had to poke around your code to find this."]), type_rest)
+  elif (pick == 1):
+    typed(random.choice(["Hacker Online", "SGFja2VyIE9ubGluZQ==", "48 61 63 6b 65 72 20 4f 6e 6c 69 6e 65", "01001000 01100001 01100011 01101011 01100101 01110010 00100000 01001111 01101110 01101100 01101001 01101110 01100101", "Looking for the hivemind?"]), type_rest)
+  else:
+    typed(random.choice(["Did you seriously just call my function raw?", "Not even an variable? How rude.", "Seriously, use some arguments why don't you?"]), type_rest)
+
+def hackerAlert():
+  typed(random.choice(["Oh no, not a hacker!", "What, a hacker, where!?", "Ahhh, everybody run there's a hacker.", "Follow this link for free bitCoin --> https://printer.discord.com"]), 0.04)
+
 try:
     if (__name__ == "__main__"):
-        typed("hello world", time_between=0.1)
-        while True:
-            # this code is temporary for now. I'm going to make a method to ask for user input that is better and more precise.
-            z = str(input("PY >>> ")).strip(" ")
-            y = z.split(" ")
-            if (len(y) > 1):
-                temp = add_spaces(y[1:])
-                y = [y[0], temp]
-            x = z.lower()
+      # helloWorld() Sorry had to do this to you lol
+      while True:
+          # this code is temporary for now. I'm going to make a method to ask for user input that is better and more precise.
+          z = str(input("PY >>> ")).strip(" ")
+          y = z.split(" ")
+          if (len(y) > 1):
+              temp = add_spaces(y[1:])
+              y = [y[0], temp]
+          x = z.lower()
 
-            # -----------------------------------
-            # Fun Commands
-            # -----------------------------------
+          # -----------------------------------
+          # Fun Commands
+          # -----------------------------------
 
-            if (x in ["test neonumber", "test neo number"]):
-                test_neo_number()
-            
-            elif (x == "hello world"):
-                typed("Hey that's my line :/")
-            
-            elif (y[0] == "say"):
-                if (y[1].find("-c")):
-                    y[1] = y[1].replace("-c", "")
-                    clear()
+          if (x in ["test neonumber", "test neo number"]):
+              test_neo_number()
+          
+          elif (x == "hello world"):
+              typed("Hey that's my line :/")
+          elif ("sing" in x):
+              helloWorld()
+          
+          elif (y[0] == "say"):
+              if (y[1].find("-c")):
+                  y[1] = y[1].replace("-c", "")
+                  clear()
 
-                typed(y[1])
+              typed(y[1])
 
-            # -----------------------------------
-            # HAPPY ABI WABI
-            # -----------------------------------
+          # -----------------------------------
+          # HAPPY ABI WABI
+          # -----------------------------------
 
-            elif (x[:3] == "uwu"):
-                try:
-                    typed("OwO "*int(x[3:]), 0.001)
-                except Exception:
-                    typed("owo")
-            
-            elif (x == "ara ara"):
-                typed("no stop\n"*2, 0.01)
-                typed("no stop")
-            
-            elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
-                typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
-            
-            elif (x == "calvin"):
-                theCalvinFunction()
+          elif (x[:3] == "uwu"):
+              try:
+                  typed("OwO "*int(x[3:]), 0.001)
+              except Exception:
+                  typed("owo")
+          
+          elif (x == "ara ara"):
+              typed("no stop\n"*2, 0.01)
+              typed("no stop")
+          
+          elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
+              typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
+          
+          elif (x == "calvin"):
+              theCalvinFunction()
+          
+          # optimizing this for ya
+          # ("reaper" in x) or ("death" in x)
+          elif (x in ["reaper", "death"]):
+            theReaperFunction(0, 0.04)
 
-            # -----------------------------------
-            # Program Commands
-            # -----------------------------------
+          elif ("hack" in x):
+            hackerAlert()
+          
+          # -----------------------------------
+          # Program Commands
+          # -----------------------------------
 
-            # C++
-            elif (x == "run cplusplus") or (x == "run c++"):
-                # with th.Thread(target=CompileC) as nt:
-                nt = th.Thread(target=CompileC)
-                nt.start()
-                # we should put a loading function here so it can show a loading screen in the console while it compiles!
+          # C++
+          elif (x == "run cplusplus") or (x == "run c++"):
+              # with th.Thread(target=CompileC) as nt:
+              nt = th.Thread(target=CompileC)
+              nt.start()
+              # we should put a loading function here so it can show a loading screen in the console while it compiles!
 
 
-                clear()
-                while True:
-                    typed("Compiling...", time_between=0.03)
-                    if (not nt.is_alive()):
-                        typed("Done!", time_between=0.02)
-                        break
-                    clear()
+              clear()
+              while True:
+                  typed("Compiling...", time_between=0.03)
+                  if (not nt.is_alive()):
+                      typed("Done!", time_between=0.02)
+                      break
+                  clear()
 
-                del nt
-                RunC()
-            
-            # Node Javascript
-            elif (x == "run node"):
-                clear()
-                if (check_if_windows()):
-                    # subprocess.call('node node.js', shell=True)
-                    # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
-                    os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')
-                else:
-                    os.system("node node.js")
-            
-            # C Sharp
-            elif (x == "run c#") or (x == "run csharp"):
-                os.system("clear && echo loading... && csharp csharp.cs")
-            
-            # Java
-            elif (x == "run java"):
-                clear()
-                typed("loading...", time_between=0.02)
-                os.system("java java.java")
+              del nt
+              RunC()
+          
+          # Node Javascript
+          elif (x == "run node"):
+              clear()
+              if (check_if_windows()):
+                  # subprocess.call('node node.js', shell=True)
+                  # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
+                  os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')
+              else:
+                  os.system("node node.js")
+          
+          # C Sharp
+          elif (x == "run c#") or (x == "run csharp"):
+              os.system("clear && echo loading... && csharp csharp.cs")
+          
+          # Java
+          elif (x == "run java"):
+              clear()
+              typed("loading...", time_between=0.02)
+              os.system("java java.java")
 
-                
-            # -------------------------------------
-            # Shell Commands
-            # -------------------------------------
-            
-            elif (x == "clear"):
-                clear()
+              
+          # -------------------------------------
+          # Shell Commands
+          # -------------------------------------
+          
+          elif (x == "clear"):
+              clear()
 
-            elif y[0] in ["console", "cn", "c"]:
-                newY = ""
-                iterable = list(y[1:]) 
-                for i in iterable:
-                    newY += f"{i} "
-                os.system(newY)
+          elif y[0] in ["console", "cn", "c"]:
+              newY = ""
+              iterable = list(y[1:]) 
+              for i in iterable:
+                  newY += f"{i} "
+              os.system(newY)
 
-            elif (x ==  "quit") or (x == "exit"):
-                os.system("exit")
-            else:
-                typed("I don't understand :/")
+          elif (x ==  "quit") or (x == "exit"):
+              os.system("exit")
+          else:
+              typed("I don't understand :/")
 except KeyboardInterrupt:
     typed("\nExitting...")
