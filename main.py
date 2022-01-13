@@ -146,15 +146,15 @@ MAIN CLASSES
 class neo_number:
     def __init__(self, initial: float, /, min:float=None, max:float=None, wrap: bool = True):
         self._number = initial
-        if (max <= min):
+        if (max <= min and not (min or max) == None):
             raise ValueError("The minimum cannot be greater than or equal to the maximum.")
         else:
             self.min = min 
             self.max = max
-            if (max or min) == None:
-                self.wrap = False
-            else:
-                self.wrap = wrap
+        if (max or min) == None:
+            self.wrap = False
+        else:
+            self.wrap = wrap
     
     @property
     def Number(self):
@@ -204,17 +204,7 @@ class neo_number:
             else:
                 self.Number = self.min
         return self.Number
-    
-    # def set_number(self, number):
-    #     self.Number = number 
-    #     self.evaluate()
 
-
-
-    # def add(self, other_num):
-    #     newValue = self.Number + other_num
-    #     if (newValue > self.max):
-    #         newValue = newValue % ()
 
 def theCalvinFunction():
     print("**** it's ya boi, kevin bacon")
