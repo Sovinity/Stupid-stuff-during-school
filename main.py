@@ -26,8 +26,8 @@ def typed(text, /, time_between: float =0.08, clr: bool=False):
     print()
 
 def toBool(string: str):
-    true_statements = ["yes", "yep", "uh-huh", "yeah", "true"]
-    false_statements = ["no", "nope", "nuh-uh", "false"]
+    true_statements = ["yes", "yep", "uh-huh", "yeah", "true", "definitely"]
+    false_statements = ["no", "nope", "nuh-uh", "false", "definitely not"]
 
     if (string.lower() in true_statements):
         return True;
