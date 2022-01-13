@@ -10,6 +10,8 @@ from time import sleep
 import platform as pf
 import threading as th
 import random
+import math
+import json 
 import os
 
 '''
@@ -52,6 +54,11 @@ def question(text: str, /, return_type: type = str, clr: bool = True, enter_text
         except Exception:
             typed(f"That was not an accepted type. This is the required type: {return_type}")
 
+def load_save():
+    with open("savefile.json", 'r') as s:
+        data = json.load(s)
+    return data;
+
 def check_if_windows():
     if (pf.system().lower() == "windows"):
         return True;
@@ -63,6 +70,7 @@ def clear():
         os.system("cls")
     elif (pf.system().lower() == "linux"):
         os.system("clear")
+
 '''
 
 BASIC METHODS
@@ -139,13 +147,35 @@ class neo_number:
         if (self.max != None):
             if (self.Number > self.max):
                 if self.wrap:
-                    self.Number = self.min + (abs(self.Number)%(self.max-self.min))
+                    # Method 1
+                    # self.Number = self.min + ((self.max-self.min)%(self.max - abs(self.Number)))
+
+                    # Method 2 (Bruteforce method)
+                    # while (self.Number > self.max):
+                    #     self.Number = self.Number - (self.max - self.min)
+
+                    # Method 3 (Logical Mathematical version)
+                    x = ((self.Number - self.max) / (self.max-self.min))
+                    y = x - (math.floor(x))
+                    self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
+
                 else:
                     self.Number = self.max
         if (self.min != None):
             if (self.Number < self.min):
                 if self.wrap:
-                    self.Number = self.max - (abs(self.Number)%(self.max-self.min))
+                    # Method 1
+                    # self.Number = self.max - (abs(self.Number)%(self.max-self.min))
+
+                    # Method 2
+                    # while (self.Number < self.min):
+                    #     self.Number = self.Number + (self.max - self.min)
+
+                    # Method 3
+                    x = ((self.Number - self.min) / (self.max-self.min))
+                    y = abs(x - (math.floor(x)))
+                    self.Number = self.min+round((self.max-self.min)*y, (len(str(self.Number))))
+                    # Just sitting here coding this, thinking, "I need to watch SAO again."
                 else:
                     self.Number = self.min
         return self.Number

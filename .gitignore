@@ -1,4 +1,3 @@
-*.exe
 *.replit
 *.breakpoints
 
@@ -6,3 +5,5 @@ package-lock.json
 package.json
 
 node_modules
+.vscode
+__pycache__
