@@ -13,15 +13,19 @@ int main()
     std::cout << "Welcome to the c++ shell!";
     while (true)
     {
-        std::string x = input("");
+        std::string x = lowerCase(input(""));
         
         if (x == "exit" || x == "quit")
         {
             return 0;
         }
-        else if (x.find("snuggle")!=std::string::npos)
+        else if (findInString(x, "snuggles") || findInString(x, "snuggle") || findInString(x, "cuddles") || findInString(x, "cuddle"))
         {
             std::cout << "C++ isn't nice enough to give snuggles";
+        }
+        else
+        {
+            std::cout << "Sorry, I don't understand :/";
         }
     }
 }
@@ -44,5 +48,5 @@ std::string lowerCase(std::string text)
 
 bool findInString(std::string string, std::string substring)
 {
-    text
+    return string.find(substring)!=std::string::npos;
 }
