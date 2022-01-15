@@ -9,6 +9,7 @@ Created by MushroomEnder on Jan 7th, on Friday
 from time import sleep
 import platform as pf
 import threading as th
+from colorama import Fore, Back
 import random
 import math
 import json 
@@ -168,13 +169,20 @@ class screen:
         for i in text:
             print(i, end="", flush="false")
             sleep(time_between)
-        self.content.append(text)
-        self.update()
+        self.append(text)
         sleep(time_between*3)
         print()
     
     def clear(self):
         self.content = []
+        self.update()
+    
+    def append(self, screen_item: str, insertion_placement: int = None):
+        if insertion_placement == None:
+            self.content.append(screen_item)
+        else:
+            self.content.insert(insertion_placement, screen_item)
+        self.update()
 
 
 class shell(screen):
@@ -187,7 +195,7 @@ class shell(screen):
     def solve_shell(self, clr:bool=False):
         if clr:
             clear()
-        self.shell_func(self)
+        return self.shell_func(self)
 
     def beckon(self):
         '''
@@ -201,6 +209,7 @@ class shell(screen):
         '''
         z = str(input(self.beckon_text)).strip(" ")
         y = z.split(" ")
+        # Next plan will be to make the "y" variable store flags as well.
         if (len(y) > 1):
             temp = add_spaces(y[1:])
             y = [y[0], temp]
@@ -270,12 +279,12 @@ class neo_number:
                 self.Number = self.min
         return self.Number
 
-def theCalvinFunction() -> None:
-    print("**** it's ya boi, kevin bacon")
+def theCalvinFunction(shell_class) -> None:
+    shell_class.typed("**** it's ya boi, kevin bacon")
 
-def theReaperFunction(pick: int = 3, type_rest: float = 0.04):
+def theReaperFunction(shell_class: shell, pick: int = 3, type_rest: float = 0.04):
     if (pick == 0):
-        typed(random.choice(
+        shell_class.typed(random.choice(
             [
                 "You called?", 
                 "Yeah, I'm here, why?", 
@@ -283,7 +292,7 @@ def theReaperFunction(pick: int = 3, type_rest: float = 0.04):
                 "Probably had to poke around your code to find this."
             ]), type_rest)
     elif (pick == 1):
-        typed(random.choice(
+        shell_class.typed(random.choice(
             [
                 "Hacker Online", 
                 "SGFja2VyIE9ubGluZQ==", 
@@ -292,15 +301,15 @@ def theReaperFunction(pick: int = 3, type_rest: float = 0.04):
                 "Looking for the hivemind?"
             ]), type_rest)
     else:
-        typed(random.choice(
+        shell_class.typed(random.choice(
             [
                 "Did you seriously just call my function raw?", 
                 "Not even an variable? How rude.", 
                 "Seriously, use some arguments why don't you?"
             ]), type_rest)
 
-def hackerAlert():
-    typed(random.choice(
+def hackerAlert(shell_class: shell):
+    shell_class.typed(random.choice(
         [
             "Oh no, not a hacker!", 
             "What, a hacker, where!?", 
@@ -310,11 +319,12 @@ def hackerAlert():
 
 def shell_code(shell_class: shell):
     x,y,z = shell_class.beckon()
-
+    shell_class.append(f"> {z}")
     # -----------------------------------
     # Fun Commands
     # -----------------------------------
 
+    successful = True
     if (x in ["test neonumber", "test neo number"]):
         test_neo_number()
     
@@ -328,13 +338,13 @@ def shell_code(shell_class: shell):
         if (y[1].find("-c") != -1):
             # print(y[1].find("-c"))
             y[1] = y[1].replace("-c", "")
-            clear()
+            shell_class.clear()
             
 
-        typed(y[1])
+        shell_class.typed(y[1])
     
     elif ("nya" in x):
-        typed("I wove you~")
+        shell_class.typed("I wove you~")
 
     # -----------------------------------
     # HAPPY ABI WABI
@@ -342,27 +352,27 @@ def shell_code(shell_class: shell):
 
     elif (x[:3] == "uwu"):
         try:
-            typed("OwO "*int(x[3:]), 0.001)
+            shell_class.typed("OwO "*int(x[3:]), 0.001)
         except Exception:
-            typed("owo")
+            shell_class.typed("owo")
     
     elif (x == "ara ara"):
-        typed("no stop\n"*2, 0.01)
-        typed("no stop")
+        shell_class.typed("no stop\n"*2, 0.01)
+        shell_class.typed("no stop")
     
     elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
-        typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
+        shell_class.typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
     
     elif (x == "calvin"):
-        theCalvinFunction()
+        theCalvinFunction(shell_class)
     
     # optimizing this for ya
     # ("reaper" in x) or ("death" in x)
     elif (x in ["reaper", "death"]):
-        theReaperFunction(0, 0.04)
+        theReaperFunction(shell_class, 0, 0.04)
 
     elif ("hack" in x):
-        hackerAlert()
+        hackerAlert(shell_class)
     
     # -----------------------------------
     # Program Commands
@@ -376,20 +386,21 @@ def shell_code(shell_class: shell):
         # we should put a loading function here so it can show a loading screen in the console while it compiles!
 
 
-        clear()
+        shell_class.clear()
         while True:
-            typed("Compiling...", time_between=0.03)
+            shell_class.clear()
+            shell_class.typed("Compiling...", time_between=0.03)
             if (not nt.is_alive()):
-                typed("Done!", time_between=0.02)
+                shell_class.typed("Done!", time_between=0.02)
                 break
-            clear()
+            shell_class.clear()
 
         del nt
         RunC()
     
     # Node Javascript
     elif (x == "run node"):
-        clear()
+        shell_class.clear()
         if (check_if_windows()):
             # subprocess.call('node node.js', shell=True)
             # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
@@ -403,8 +414,8 @@ def shell_code(shell_class: shell):
     
     # Java
     elif (x == "run java"):
-        clear()
-        typed("loading...", time_between=0.02)
+        shell_class.clear()
+        shell_class.typed("loading...", time_between=0.02)
         os.system("java java.java")
 
         
@@ -413,7 +424,7 @@ def shell_code(shell_class: shell):
     # -------------------------------------
     
     elif (x == "clear"):
-        clear()
+        shell_class.clear()
 
     elif y[0] in ["console", "cn", "c"]:
         newY = ""
@@ -425,7 +436,17 @@ def shell_code(shell_class: shell):
     elif (x ==  "quit") or (x == "exit"):
         return 1;
     else:
-        typed("I don't understand :/")
+        shell_class.typed("I don't understand :/")
+        successful = False 
+    
+    try:
+        shell_class.content.pop(-2)
+        if (successful):
+            shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", -1)
+        else:
+            shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", -1)
+    except IndexError:
+        pass
 
 if (__name__ == "__main__"):
     newShell = shell(shell_code, [])
