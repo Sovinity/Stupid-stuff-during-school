@@ -6,7 +6,6 @@ Created by MushroomEnder on Jan 7th, on Friday
 
 '''
 
-from mimetypes import init
 from time import sleep
 import platform as pf
 import threading as th
@@ -14,7 +13,6 @@ import random
 import math
 import json 
 import os
-import time
 
 '''
 
