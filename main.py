@@ -417,138 +417,143 @@ def hackerAlert(shell_class: shell):
             "Follow this link for free bitCoin --> https://printer.discord.com"
         ]), 0.04)
 
-def shell_code(shell_class: shell, args: list):
-    '''
-    This is the main shell area of this code!
-    '''
-    x,y,z = shell_class.beckon()
-    if not "r" in y[2]: 
-        shell_class.append(f"> {z}")
-    # -----------------------------------
-    # Fun Commands
-    # -----------------------------------
-
-    successful = True
-    
-    if (x == "hello world"):
-        shell_class.typed("Hey that's my line :/")
-        # print(shell_class.content)
-    elif ("sing" in x):
-        helloWorld(shell_class)
-    
-    elif (y[0] == "say"):
-        if ("c" in y[2]):
-            shell_class.clear()
-
-        shell_class.typed(y[1])
-    
-    elif ("nya" in x):
-        shell_class.typed("I wove you~")
-
-    # -----------------------------------
-    # HAPPY ABI WABI
-    # -----------------------------------
-
-    elif (x[:3] == "uwu"):
-        try:
-            shell_class.typed("OwO "*int(x[3:]), 0.001)
-        except Exception:
-            shell_class.typed("owo")
-    
-    elif (x == "ara ara"):
-        shell_class.typed("no stop\n"*2, 0.01)
-        shell_class.typed("no stop")
-    
-    elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
-        shell_class.typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
-    
-    elif (x == "calvin"):
-        theCalvinFunction(shell_class)
-    
-    # optimizing this for ya
-    # ("reaper" in x) or ("death" in x)
-    elif (x in ["reaper", "death"]):
-        theReaperFunction(shell_class, 0, 0.04)
-
-    elif ("hack" in x):
-        hackerAlert(shell_class)
-    
-    # -----------------------------------
-    # Program Commands
-    # -----------------------------------
-
-    # C++
-    elif (x == "run cplusplus") or (x == "run c++"):
-        # with th.Thread(target=CompileC) as nt:
-        nt = th.Thread(target=CompileC)
-        nt.start()
-        # we should put a loading function here so it can show a loading screen in the console while it compiles!
-
-
-        shell_class.clear()
-        while True:
-            shell_class.clear()
-            shell_class.typed("Compiling...", time_between=0.03)
-            if (not nt.is_alive()):
-                shell_class.typed("Done!", time_between=0.02)
-                break
-            shell_class.clear()
-
-        del nt
-        RunC()
-    
-    # Node Javascript
-    elif (x == "run node"):
-        shell_class.clear()
-        if (check_if_windows()):
-            # subprocess.call('node node.js', shell=True)
-            # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
-            os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')
-        else:
-            os.system("node node.js")
-    
-    # C Sharp
-    elif (x == "run c#") or (x == "run csharp"):
-        os.system("clear && echo loading... && csharp csharp.cs")
-    
-    # Java
-    elif (x == "run java"):
-        shell_class.clear()
-        shell_class.typed("loading...", time_between=0.02)
-        os.system("java java.java")
-
-        
-    # -------------------------------------
-    # Shell Commands
-    # -------------------------------------
-    
-    elif (x == "clear"):
-        shell_class.clear()
-
-    elif y[0] in ["console", "cn", "c"]:
-        newY = ""
-        iterable = list(y[1:]) 
-        for i in iterable:
-            newY += f"{i} "
-        os.system(newY)
-
-    elif (x ==  "quit") or (x == "exit"):
-        return 1;
-    else:
-        shell_class.typed("I don't understand :/")
-        successful = False 
-    
-    if not "r" in y[2]:
-        try:
-            shell_class.content.pop(-2)
-            if (successful):
-                shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", -1)
-            else:
-                shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", -1)
-        except IndexError:
-            pass
-
 if (__name__ == "__main__"):
+    def shell_code(shell_class: shell, args: list):
+        '''
+        This is the main shell area of this code!
+        '''
+        x,y,z = shell_class.beckon()
+        show_beckon_text = False
+        if not "r" in y[2]: 
+            show_beckon_text = True
+            shell_class.append(f"> {z}")
+            beckon_index = len(shell_class.content)-1
+            
+
+        # -----------------------------------
+        # Fun Commands
+        # -----------------------------------
+
+        successful = True
+        
+        if (x == "hello world"):
+            shell_class.typed("Hey that's my line :/")
+            # print(shell_class.content)
+        elif ("sing" in x):
+            helloWorld(shell_class)
+        
+        elif (y[0] == "say"):
+            if ("c" in y[2]):
+                shell_class.clear()
+
+            shell_class.typed(y[1])
+        
+        elif ("nya" in x):
+            shell_class.typed("I wove you~")
+
+        # -----------------------------------
+        # HAPPY ABI WABI
+        # -----------------------------------
+
+        elif (x[:3] == "uwu"):
+            try:
+                shell_class.typed("OwO "*int(x[3:]), 0.001)
+            except Exception:
+                shell_class.typed("owo")
+        
+        elif (x == "ara ara"):
+            shell_class.typed("no stop\n"*2, 0.01)
+            shell_class.typed("no stop")
+        
+        elif ("snuggles" in x) or ("snuggle" in x) or ("cuddle" in x) or ("cuddles" in x):
+            shell_class.typed(random.choice(["No Snuggles for you.", "You don't get snuggles.", "I probably should let you, but I won't", "I will give you snuggles :3"]), 0.04)
+        
+        elif (x == "calvin"):
+            theCalvinFunction(shell_class)
+        
+        # optimizing this for ya
+        # ("reaper" in x) or ("death" in x)
+        elif (x in ["reaper", "death"]):
+            theReaperFunction(shell_class, 0, 0.04)
+
+        elif ("hack" in x):
+            hackerAlert(shell_class)
+        
+        # -----------------------------------
+        # Program Commands
+        # -----------------------------------
+
+        # C++
+        elif (x == "run cplusplus") or (x == "run c++"):
+            # with th.Thread(target=CompileC) as nt:
+            nt = th.Thread(target=CompileC)
+            nt.start()
+            # we should put a loading function here so it can show a loading screen in the console while it compiles!
+
+
+            shell_class.clear()
+            while True:
+                shell_class.clear()
+                shell_class.typed("Compiling...", time_between=0.03)
+                if (not nt.is_alive()):
+                    shell_class.typed("Done!", time_between=0.02)
+                    break
+                shell_class.clear()
+
+            del nt
+            RunC()
+        
+        # Node Javascript
+        elif (x == "run node"):
+            shell_class.clear()
+            if (check_if_windows()):
+                # subprocess.call('node node.js', shell=True)
+                # %SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe 
+                os.system('%SystemRoot%\system32\WindowsPowerShell\\v1.0\powershell.exe node node.js')
+            else:
+                os.system("node node.js")
+        
+        # C Sharp
+        elif (x == "run c#") or (x == "run csharp"):
+            os.system("clear && echo loading... && csharp csharp.cs")
+        
+        # Java
+        elif (x == "run java"):
+            shell_class.clear()
+            shell_class.typed("loading...", time_between=0.02)
+            os.system("java java.java")
+
+            
+        # -------------------------------------
+        # Shell Commands
+        # -------------------------------------
+        
+        elif (x == "clear"):
+            shell_class.clear()
+
+        elif y[0] in ["console", "cn", "c"]:
+            newY = ""
+            iterable = list(y[1:]) 
+            for i in iterable:
+                newY += f"{i} "
+            os.system(newY)
+
+        elif (x ==  "quit") or (x == "exit"):
+            return 1;
+        else:
+            shell_class.typed("I don't understand :/")
+            successful = False 
+        
+        if show_beckon_text:
+            try:
+                shell_class.content.pop(beckon_index)
+                if (successful):
+                    shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", beckon_index)
+                else:
+                    shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", beckon_index)
+            except IndexError:
+                pass
+
     newShell = shell(shell_code, [], max=8)
     while True:
         try:
@@ -556,5 +561,5 @@ if (__name__ == "__main__"):
             if exit_code == 1:
                 break
         except KeyboardInterrupt:
-            typed("\nExitting...")
+            typed("\nExitting...", 0.02)
             break
