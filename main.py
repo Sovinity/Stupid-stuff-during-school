@@ -6,14 +6,24 @@ Created by MushroomEnder on Jan 7th, on Friday
 
 '''
 
+from colorama import Fore, Back
 from time import sleep
 import platform as pf
 import threading as th
-from colorama import Fore, Back
+import logging
 import random
 import math
 import json 
 import os
+
+# Logging Information
+
+logging.basicConfig (
+    filename='mainPythonFile.log', 
+    filemode='w', 
+    format='%(name)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG
+)
 
 '''
 
@@ -22,6 +32,17 @@ MAIN FUNCTIONS
 '''
 
 def typed(text, /, time_between: float =0.08, clr: bool=False) -> None:
+    '''
+    Types text to the basic console as if it is being spoken!
+
+    text: Text to speak!
+
+    time_between: The time between each character!
+
+    clr: If the console should be cleared before print!
+    '''
+    if clr:
+        clear()
     for i in text:
         print(i, end="", flush="false")
         sleep(time_between)
@@ -29,8 +50,13 @@ def typed(text, /, time_between: float =0.08, clr: bool=False) -> None:
     print()
 
 def toBool(string: str) -> bool:
+    '''
+    Translates normal words into a bool!
+    '''
     true_statements = ["yes", "yep", "uh-huh", "yeah", "true", "definitely"]
     false_statements = ["no", "nope", "nuh-uh", "false", "definitely not"]
+
+    string = string.strip(" ")
 
     if (string.lower() in true_statements):
         return True;
@@ -40,6 +66,17 @@ def toBool(string: str) -> bool:
         raise TypeError("Statement is neither true nor false.")
 
 def question(text: str, /, return_type: type = str, clr: bool = True, enter_text: str = ">>> ") -> any:
+    '''
+    Asks a basic question in the basic console!
+
+    text: The question to ask the user!
+
+    return_type: The type that is required of the user!
+
+    clr: Clear before asks the question!
+
+    enter_text: The text that goes in the "input()" function
+    '''
     typed(text)
     while True:
         x = input(enter_text)
@@ -56,17 +93,30 @@ def question(text: str, /, return_type: type = str, clr: bool = True, enter_text
             typed(f"That was not an accepted type. This is the required type: {return_type}")
 
 def load_save() -> dict:
+    '''
+    Loads the save file!
+    '''
     with open("savefile.json", 'r') as s:
         data = json.load(s)
     return data;
 
 def check_if_windows() -> bool:
+    '''
+    Check if the system is running windows!
+
+    (Because Windows is so specific and it has to be cradled like a wittwe babwy!)
+    '''
     if (pf.system().lower() == "windows"):
         return True;
     else:
         return False;   
 
 def clear() -> None:
+    '''
+    Clear the console! 
+
+    Determines if it is windows, or linux!
+    '''
     if (pf.system().lower() == "windows"):
         os.system("cls")
     elif (pf.system().lower() == "linux"):
@@ -98,32 +148,22 @@ def add_spaces(array: tuple) -> None:
 
     String up an array by adding spaces in between.
 
+    x = ["Hello,", "world", "!"]
+
+    add_spaces(x) -> "Hello, world !"
+
     '''
     appendable = ""
     for i in array:
         appendable += f"{i} "
     return appendable[:-1]
-
-def test_neo_number():
-    initial = question("What is the initial value?", float, False)
-    maximum = question("What is the max?", float, False)
-    minimum = question("What is the min?", float, False)
-    wrap = question("Should it wrap?", bool, False)
-    nn = neo_number(initial, minimum, maximum, wrap)
-
-    while (True):
-        x = question("", str, False)
-
-        if (x == "add"):
-            nn.set_number(nn.Number+question("by how much?", float, False))
-        elif (x == "multiply"):
-            nn.set_number(nn.Number+question("by how much?", float, False))
-        elif (x == "print"):
-            print(nn.Number)
-        elif (x == "exit"):
-            return;
             
 def helloWorld() -> None:
+    '''
+    Sing the beautiful song "hello world" by Louie Zong!
+
+    https://www.youtube.com/watch?v=Yw6u6YkTgQ4
+    '''
     try:
         typed("Hello World", 0.1)
         sleep(1)
@@ -144,8 +184,17 @@ MAIN CLASSES
 '''
 
 class screen:
-    def __init__(self, initial:list=[]):
-        self.content = initial 
+    '''
+    Creates a screen that is manipulateable!
+
+    After text is written to it, it saves it in the content variable,
+    so you can mess with the variable, and update the screen!
+    '''
+    def __init__(self, initial:list=[], /, max:int = None):
+        self.content = initial
+        # print(max)
+        if (max != None) and (max <= 0): raise ValueError("Max has to be greater than one.")
+        self.max = max
 
     @property
     def content(self):
@@ -158,14 +207,29 @@ class screen:
             self.update()
     
     def update(self):
+        '''
+        Updates the screen with the current information!
+        '''
         clear()
+        if self.max:
+            while len(self.content) > self.max:
+                self.content.pop(0)
         for i in self.content:
             print(i)
         
     def typed(self, text: str, time_between:float=0.08, clr:bool=False):
+        '''
+        Write text to the shell as if it was speech!
+
+        text: The text spoken to the screen!
+
+        time_between: the amount of time between each character!
+
+        clr: If it should clear the screen before speech!
+        '''
         self.update()
         if clr:
-            self.content = []
+            self.clear()
         for i in text:
             print(i, end="", flush="false")
             sleep(time_between)
@@ -174,10 +238,17 @@ class screen:
         print()
     
     def clear(self):
+        '''
+        Clears the screen, and updates!
+        '''
         self.content = []
         self.update()
     
     def append(self, screen_item: str, insertion_placement: int = None):
+        '''
+        Add something to the screen!
+        If no insertion placement is given, it will place it at the end.
+        '''
         if insertion_placement == None:
             self.content.append(screen_item)
         else:
@@ -186,16 +257,25 @@ class screen:
 
 
 class shell(screen):
-    def __init__(self, shell_func, start_content:list = [], /, beckon_text: str = "--\nPY >>> ", clr_constantly: bool = False):
+    def __init__(self, shell_func, start_content:list = [], /, beckon_text: str = "--\nPY >>> ", clr_constantly: bool = False, max:int=None):
         self.beckon_text = beckon_text
         self.clr = clr_constantly
         self.shell_func = shell_func
-        super().__init__(start_content)
+        self.max = max
+        super().__init__(start_content, max)
     
-    def solve_shell(self, clr:bool=False):
+    def solve_shell(self, /, args=[], clr:bool=False):
+        '''
+        Run your function with the shell!
+
+        This shell object is passed to it as the first parameter!
+        Returns the return value of your function as well!
+
+        def your_func(shell_object, args)
+        '''
         if clr:
             clear()
-        return self.shell_func(self)
+        return self.shell_func(self, args)
 
     def beckon(self):
         '''
@@ -203,21 +283,36 @@ class shell(screen):
         Returns a list of 3 similar values from the shell.
 
         x: Stripped lower case letters
-        y: A list structured like this: [<first word>, <second word>]
+        y: A list structured like this: [<first word: str>, <main body text: str>, <flags: list>]
         z: The raw input string
 
         '''
         z = str(input(self.beckon_text)).strip(" ")
         y = z.split(" ")
-        # Next plan will be to make the "y" variable store flags as well.
-        if (len(y) > 1):
-            temp = add_spaces(y[1:])
-            y = [y[0], temp]
         x = z.lower()
+        flags = []
+
+        b = False
+        for count,i in enumerate(y):
+            if i[0] == "-":
+                b = True
+                break 
+        
+        if b:
+            for i in y[count][1:]:
+                flags.append(i)
+            y.pop(count)
+        y = [y[0], add_spaces(y[1:]), flags]
+
         return [x, y, z];
 
 
 class neo_number:
+    '''
+    A number with a max and a minimum!
+    You can even make it wrap back and forth through
+    the min and max!
+    '''
     def __init__(self, initial: float, /, min:float=None, max:float=None, wrap: bool = True):
         self._number = initial
         if (max <= min and not (min or max) == None):
@@ -280,9 +375,15 @@ class neo_number:
         return self.Number
 
 def theCalvinFunction(shell_class) -> None:
+    '''
+    IT'S YA BOI KEVIN BACON
+    '''
     shell_class.typed("**** it's ya boi, kevin bacon")
 
 def theReaperFunction(shell_class: shell, pick: int = 3, type_rest: float = 0.04):
+    '''
+    Talk to the man death himself!
+    '''
     if (pick == 0):
         shell_class.typed(random.choice(
             [
@@ -318,6 +419,9 @@ def hackerAlert(shell_class: shell):
         ]), 0.04)
 
 def shell_code(shell_class: shell):
+    '''
+    This is the main shell area of this code!
+    '''
     x,y,z = shell_class.beckon()
     shell_class.append(f"> {z}")
     # -----------------------------------
@@ -325,21 +429,16 @@ def shell_code(shell_class: shell):
     # -----------------------------------
 
     successful = True
-    if (x in ["test neonumber", "test neo number"]):
-        test_neo_number()
     
-    elif (x == "hello world"):
+    if (x == "hello world"):
         shell_class.typed("Hey that's my line :/")
         # print(shell_class.content)
     elif ("sing" in x):
         helloWorld()
     
     elif (y[0] == "say"):
-        if (y[1].find("-c") != -1):
-            # print(y[1].find("-c"))
-            y[1] = y[1].replace("-c", "")
+        if ("c" in y[2]):
             shell_class.clear()
-            
 
         shell_class.typed(y[1])
     
@@ -449,7 +548,7 @@ def shell_code(shell_class: shell):
         pass
 
 if (__name__ == "__main__"):
-    newShell = shell(shell_code, [])
+    newShell = shell(shell_code, [], max=8)
     while True:
         try:
             exit_code = newShell.solve_shell()

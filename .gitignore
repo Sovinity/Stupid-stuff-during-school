@@ -1,5 +1,6 @@
 *.replit
 *.breakpoints
+*.log
 
 package-lock.json
 package.json
