@@ -157,25 +157,6 @@ def add_spaces(array: tuple) -> None:
     for i in array:
         appendable += f"{i} "
     return appendable[:-1]
-            
-def helloWorld() -> None:
-    '''
-    Sing the beautiful song "hello world" by Louie Zong!
-
-    https://www.youtube.com/watch?v=Yw6u6YkTgQ4
-    '''
-    try:
-        typed("Hello World", 0.1)
-        sleep(1)
-        typed("Programmed to work and not to feel.", 0.1)
-        sleep(1)
-        typed("Not even sure that this is real.", 0.1)
-        sleep(1)
-        typed("Hello World", 0.3)
-        sleep(3)
-        clear()
-    except KeyboardInterrupt:
-        typed("\nWhy are you stopping me?", 0.04)
 
 '''
 
@@ -380,6 +361,24 @@ def theCalvinFunction(shell_class) -> None:
     '''
     shell_class.typed("**** it's ya boi, kevin bacon")
 
+def helloWorld(shell_class: shell) -> None:
+    '''
+    Sing the beautiful song "hello world" by Louie Zong!
+
+    https://www.youtube.com/watch?v=Yw6u6YkTgQ4
+    '''
+    try:
+        shell_class.typed("Hello World", 0.1)
+        sleep(1)
+        shell_class.typed("Programmed to work and not to feel.", 0.1)
+        sleep(1)
+        shell_class.typed("Not even sure that this is real.", 0.1)
+        sleep(1)
+        shell_class.typed("Hello World", 0.3)
+        sleep(3)
+    except KeyboardInterrupt:
+        shell_class.typed("\nWhy are you stopping me?", 0.04)
+
 def theReaperFunction(shell_class: shell, pick: int = 3, type_rest: float = 0.04):
     '''
     Talk to the man death himself!
@@ -418,12 +417,13 @@ def hackerAlert(shell_class: shell):
             "Follow this link for free bitCoin --> https://printer.discord.com"
         ]), 0.04)
 
-def shell_code(shell_class: shell):
+def shell_code(shell_class: shell, args: list):
     '''
     This is the main shell area of this code!
     '''
     x,y,z = shell_class.beckon()
-    shell_class.append(f"> {z}")
+    if not "r" in y[2]: 
+        shell_class.append(f"> {z}")
     # -----------------------------------
     # Fun Commands
     # -----------------------------------
@@ -434,7 +434,7 @@ def shell_code(shell_class: shell):
         shell_class.typed("Hey that's my line :/")
         # print(shell_class.content)
     elif ("sing" in x):
-        helloWorld()
+        helloWorld(shell_class)
     
     elif (y[0] == "say"):
         if ("c" in y[2]):
@@ -538,14 +538,15 @@ def shell_code(shell_class: shell):
         shell_class.typed("I don't understand :/")
         successful = False 
     
-    try:
-        shell_class.content.pop(-2)
-        if (successful):
-            shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", -1)
-        else:
-            shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", -1)
-    except IndexError:
-        pass
+    if not "r" in y[2]:
+        try:
+            shell_class.content.pop(-2)
+            if (successful):
+                shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", -1)
+            else:
+                shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", -1)
+        except IndexError:
+            pass
 
 if (__name__ == "__main__"):
     newShell = shell(shell_code, [], max=8)
