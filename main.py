@@ -1,6 +1,6 @@
 '''
 
-CODE BY THE SOVIET UNION.
+CODE BY THE SOVINITY.
 
 Created by MushroomEnder on Jan 7th, on Friday
 
