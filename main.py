@@ -235,6 +235,7 @@ class screen:
         else:
             self.content.insert(insertion_placement, screen_item)
         self.update()
+        return self.content[-1];
 
 
 class shell(screen):
@@ -274,10 +275,13 @@ class shell(screen):
         flags = []
 
         b = False
-        for count,i in enumerate(y):
-            if i[0] == "-":
-                b = True
-                break 
+        try:
+            for count,i in enumerate(y):
+                if i[0] == "-":
+                    b = True
+                    break 
+        except IndexError:
+            logging.warning("IndexError in 'beckon' function. Aborting y enumeration...")
         
         if b:
             for i in y[count][1:]:
@@ -426,8 +430,7 @@ if (__name__ == "__main__"):
         show_beckon_text = False
         if not "r" in y[2]: 
             show_beckon_text = True
-            shell_class.append(f"> {z}")
-            beckon_index = len(shell_class.content)-1
+            beckon_return = shell_class.append(f"> {z}")
             
 
         # -----------------------------------
@@ -546,13 +549,19 @@ if (__name__ == "__main__"):
         
         if show_beckon_text:
             try:
-                shell_class.content.pop(beckon_index)
+                #
+                # THIS NEEDS TO BE INTEGRATED INTO THE SHELL CLASS ITSELF
+                #
+                rev_id = len(shell_class.content) - shell_class.content[::-1].index(beckon_return) - 1
+                shell_class.content.pop(rev_id)
+
                 if (successful):
-                    shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", beckon_index)
+                    shell_class.append(f"> {Fore.GREEN}{z} {Fore.WHITE}", rev_id)
                 else:
-                    shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", beckon_index)
-            except IndexError:
-                pass
+                    shell_class.append(f"> {Fore.RED}{z} {Fore.WHITE}", rev_id)
+                
+            except ValueError:
+                logging.warning("Text to color not found. Aborting color change...")
 
     newShell = shell(shell_code, [], max=8)
     while True:
