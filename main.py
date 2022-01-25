@@ -93,20 +93,6 @@ def question(text: str, /, return_type: type = str, clr: bool = True, enter_text
         except Exception:
             typed(f"That was not an accepted type. This is the required type: {return_type}")
 
-def load_save(fileName: file) -> dict:
-    '''
-    Loads the save file!
-    '''
-    with open(fileName, 'r') as s:
-        data = json.load(s)
-    return data;
-
-def save_save(fileName: file) -> dict:
-    '''
-    Saves the file!
-    '''
-    with open(fileName, 'w')
-
 def check_if_windows() -> bool:
     '''
     Check if the system is running windows!
