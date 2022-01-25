@@ -1,13 +1,14 @@
 '''
 
-CODE BY THE SOVINITY.
+CODE BY SOVINITY
 
 Created by MushroomEnder on Jan 7th, on Friday
 
 '''
 
+from __future__ import annotations
 from colorama import Fore, Back
-from time import sleep
+from time import sleep, time
 import platform as pf
 import threading as th
 import logging
@@ -92,13 +93,19 @@ def question(text: str, /, return_type: type = str, clr: bool = True, enter_text
         except Exception:
             typed(f"That was not an accepted type. This is the required type: {return_type}")
 
-def load_save() -> dict:
+def load_save(fileName: file) -> dict:
     '''
     Loads the save file!
     '''
-    with open("savefile.json", 'r') as s:
+    with open(fileName, 'r') as s:
         data = json.load(s)
     return data;
+
+def save_save(fileName: file) -> dict:
+    '''
+    Saves the file!
+    '''
+    with open(fileName, 'w')
 
 def check_if_windows() -> bool:
     '''
@@ -291,7 +298,35 @@ class shell(screen):
 
         return [x, y, z];
 
+class BaseSave:
+    def __init__(self, name: str, file_dir: str = "savefile.json", data: dict = {}):
+        self.file_dir = file_dir
+        self.data = data  
 
+    def save(self, update: bool = True):
+        '''
+        Save your object!
+
+        ***If "update" is false, data will be overwritten!***
+        '''
+        
+        with open(self.file_dir, 'w') as f:
+            f.write(json.dumps(self.data))
+            return self.data
+
+    def load(self):
+        '''
+        Load your object!
+        '''
+        with open(self.file_dir, 'r') as f:
+            self.data = json.loads(f.read())
+            return self.data
+
+'''
+
+OTHER CLASSES
+
+'''
 class neo_number:
     '''
     A number with a max and a minimum!
@@ -359,6 +394,53 @@ class neo_number:
                 self.Number = self.min
         return self.Number
 
+class binary_node:
+    def __init__(self, data: int, left: binary_node = None, right: binary_node = None):
+        self.data = data 
+        self.quant = 1
+        self.left = left 
+        self.right = right 
+    
+    def append(self, value: int):
+        if value > self.data:
+            if self.right == None:
+                self.right = binary_node(value)
+            else:
+                self.right.append(value) 
+        elif value < self.data:
+            if self.left == None:
+                self.left = binary_node(value)
+            else:
+                self.left.append(value) 
+        else:
+            self.quant += 1
+    
+    def search(self, value: int):
+            if value > self.data:
+                if self.right == None:
+                    return 0
+                else:
+                    return self.right.search(value)
+            elif value < self.data:
+                if self.left == None:
+                    return 0
+                else:
+                    return self.left.search(value)
+            else:
+                return self.quant
+
+class load_text:
+    def __init__(self):
+        self.count = 0
+        self.cap = 5000000
+        self.do = True
+    
+    def start_text(self, text):
+        self.do = True
+        while self.do:
+            clear()
+            print(f"{text}...{self.count} - {round((self.count/self.cap)*100, 2)}%")
+
 def theCalvinFunction(shell_class) -> None:
     '''
     IT'S YA BOI KEVIN BACON
@@ -421,6 +503,59 @@ def hackerAlert(shell_class: shell):
             "Follow this link for free bitCoin --> https://printer.discord.com"
         ]), 0.04)
 
+def binary_play(shell_class: shell):
+    startTime = time()
+    new_load_text = load_text()
+    loadThread = th.Thread(target=new_load_text.start_text, args=["Generating Content"], daemon=True)
+    loadThread.start()
+    root = binary_node(500)
+    list_of_a_five_hundred = []
+
+    for count,i in enumerate(range(0, 5000000)):
+        list_of_a_five_hundred.append(random.randint(0, 5000))
+        # print(count)
+        new_load_text.count = count
+
+    new_load_text.do = False 
+    loadThread.join()
+    loadThread = th.Thread(target=new_load_text.start_text, args=["Building Tree"], daemon=True)
+    loadThread.start()
+    for count, i in enumerate(list_of_a_five_hundred):
+        root.append(i) 
+        new_load_text.count = count
+    # loadThread.terminate()
+    new_load_text.do = False 
+    loadThread.join()
+
+    clear()
+    endTime = time()
+
+    print(f"Tree Successfully Built in {endTime-startTime} seconds.")
+    print(f"The list is {len(list_of_a_five_hundred)} large.")
+    while True:
+        x = input("What would you to search? (type 'exit' to exit)\n>>> ")
+        if x.lower() == "exit":
+            return 0;
+        else:
+            try:
+                x = int(x)
+                clear()
+                print("Searching...")
+                startTime = time()
+                found = 0
+                for i in list_of_a_five_hundred:
+                    if i == x:
+                        found += 1
+                endTime = time()
+                print(f"The List found {x}, {found} times in {endTime-startTime} seconds")
+                startTime = time()
+                found = root.search(x)
+                endTime = time()
+                print(f"The binary tree found {x}, {found} times in {endTime-startTime} seconds")
+                print("Done.")
+            except ValueError:
+                print("That was not a valid type/answer (int | str: exit)")
+
 if (__name__ == "__main__"):
     def shell_code(shell_class: shell, args: list):
         '''
@@ -474,6 +609,9 @@ if (__name__ == "__main__"):
         elif (x == "calvin"):
             theCalvinFunction(shell_class)
         
+        elif (x == "binary"):
+            binary_play(shell_class)
+        
         # optimizing this for ya
         # ("reaper" in x) or ("death" in x)
         elif (x in ["reaper", "death"]):
@@ -524,7 +662,9 @@ if (__name__ == "__main__"):
         elif (x == "run java"):
             shell_class.clear()
             shell_class.typed("loading...", time_between=0.02)
-            os.system("java java.java")
+            x = os.system("cd javaStuff && javac *.java && java java")
+            print(f"\nProgram exited with exit code {x}")
+            input("<Press Enter to Continue>")
 
             
         # -------------------------------------
@@ -536,10 +676,11 @@ if (__name__ == "__main__"):
 
         elif y[0] in ["console", "cn", "c"]:
             newY = ""
-            iterable = list(y[1:]) 
+            iterable = list(y[1][1:])
             for i in iterable:
                 newY += f"{i} "
             os.system(newY)
+            input("<Press Enter to Continue>")
 
         elif (x ==  "quit") or (x == "exit"):
             return 1;
